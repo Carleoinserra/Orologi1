@@ -5,11 +5,13 @@ package com.example.demo;
 	import java.util.ArrayList;
 
 	import org.springframework.beans.factory.annotation.Autowired;
-	import org.springframework.stereotype.Controller;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 	import org.springframework.ui.Model;
 	import org.springframework.web.bind.annotation.GetMapping;
 	import org.springframework.web.bind.annotation.PostMapping;
 	import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 	@Controller
 	public class MyController {
 
+		@Autowired
+	    private EmailService emailService;
 		
 		 private final WatchJDBCTemplate watchJDBCTemp;
 
@@ -79,8 +83,8 @@ import org.springframework.web.bind.annotation.RestController;
 		 }
 		 
 		 @PostMapping("/buyWatch")
-		 public String addWatch(@RequestParam("ordini") String [] ordini,@RequestParam("quantities") String [] pezzi,Model model){
-			 
+		 public String addWatch(@RequestParam(value = "ordini", required = false) String[] ordini,@RequestParam("quantities") String [] pezzi,Model model){
+			
 			 ArrayList <orologio> lista = watchJDBCTemp.ritornaOrologi();
 			 ArrayList<Integer> qnt = new ArrayList <>();
 			 ArrayList<watchOrd> listaO = new ArrayList <>();
@@ -93,9 +97,11 @@ import org.springframework.web.bind.annotation.RestController;
 			 }}
 			 double prezzo = 0;
 			 
-			
+			 if (ordini != null && ordini.length == qnt.size()) { 
 				 
 				 for (int j = 0; j < ordini.length; j++) {
+					 
+					 
 					 for (int i = 0; i < lista.size(); i++) {
 					 if (lista.get(i).getModello().equals(ordini[j])) {
 						
@@ -109,7 +115,14 @@ import org.springframework.web.bind.annotation.RestController;
 					 }
 					 
 				 }
-			 }
+			 }}
+			 
+			 else if (ordini != null) {
+			        // Se ordini non è null ma la lunghezza degli ordini e delle quantità non corrispondono, aggiungi un messaggio di errore
+			        model.addAttribute("error", "Il numero degli ordini e delle quantità non corrispondono.");
+			        return "conferma";
+			    }
+
 			 
 			 for (String s: ordini) {
 				 System.out.println(s);
@@ -129,6 +142,67 @@ import org.springframework.web.bind.annotation.RestController;
 			 
 			 return "conferma";
 		 }
+		 
+		 
+		 @PostMapping("/confWatch")
+		 public ResponseEntity<String> confermaPc(@RequestParam("modello") String [] ordini,@RequestParam("qnt") String [] pezzi,@RequestParam("prezzo") String prezzo,
+				 @RequestParam("email") String email,
+				 Model model){
+	 ArrayList<watchOrd> listaO = new ArrayList <>();
+	 ArrayList<Integer> qnt = new ArrayList <>();
+	 ArrayList <orologio> lista = watchJDBCTemp.ritornaOrologi();
+			 
+			 for (String s: pezzi) {
+				 if (!s.isEmpty()) {
+				int x = Integer.parseInt(s);
+				qnt.add(x);
+				
+			 }}
+			 
+			 
+			
+				 
+				 for (int j = 0; j < ordini.length; j++) {
+					 for (int i = 0; i < lista.size(); i++) {
+					 if (lista.get(i).getModello().equals(ordini[j])) {
+						
+						 
+						
+						 watchOrd watch = new watchOrd();
+						 watch.setModello(lista.get(i).getModello());
+						 watch.setQnt(qnt.get(j));
+						 listaO.add(watch);
+						 
+					 }
+					 
+				 }}
+				 
+				 
+				 // andiamo ad aggiungere i pezzi dei prodotti acquistati nella tabella pcorders
+				/* for (pcOrd comp : pc) {
+				 pcOrdJDBCTemp.updatePezzi(comp.getQnt(), comp.getModello());}*/
+				 
+				 
+				 
+				 String to = email;
+				 String subject = "ordine da TalentformStore confermato";
+				 String text = "";
+				 text+= "Hai acquistato:  \n";
+				 for (watchOrd comp : listaO) {
+					 
+					 text+= "Modello: " + comp.getModello() + "\n";
+					 text+= "Numero pezzi: " + comp.getQnt() + "\n";
+				 }
+				 
+				 text += "Il prezzo totale da pagare è " + prezzo + " euro";
+				  emailService.sendSimpleEmail(to, subject, text);
+				 
+			 
+				 
+			 
+				  return ResponseEntity.ok("Email sent successfully, grazie per  l'acquisto, torni a trovarci");
+		 }
+		 
 		
 		 
 }
