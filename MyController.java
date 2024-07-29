@@ -10,10 +10,11 @@ package com.example.demo;
 	import org.springframework.web.bind.annotation.GetMapping;
 	import org.springframework.web.bind.annotation.PostMapping;
 	import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 
 	//dichiariamo una classe semplice con annotazione controller
-
+   
 	@Controller
 	public class MyController {
 
@@ -33,6 +34,9 @@ package com.example.demo;
 		 
 		 @GetMapping("/")
 		 public String getDip(){
+			 
+			 
+		
 			
 			 return "formOro";
 			 
@@ -54,5 +58,15 @@ package com.example.demo;
 			 
 			 return "replaceAdd";
 			 
+		 }
+		 
+		 @PostMapping("/CambiaPrezzo")
+		 public String cambiaPrezzo(@RequestParam("modello") String modello, @RequestParam("prezzo") String prezzo) {
+			 
+			 double prezzo1 = Double.parseDouble(prezzo);
+			 
+			 watchJDBCTemp.updatePrezzo(prezzo1, modello);
+			 
+			 return "changeP";
 		 }
 }
