@@ -55,6 +55,22 @@ public class WatchJDBCTemplate {
                 }
             });
         }
-   
+    
+    public void insertOrologi(ArrayList<orologio> listaO) {
+    	
+    	for (orologio o1: listaO) {
+    	
+        String query = "INSERT INTO WatchOrders (modello, qnt) VALUES (?, ? )";
+         jdbcTemplateObject.update(query,o1.getModello(), 0);
+    }}
+    
+    
+    
+  public int updateWatchOrders(String modello, int pezzi) {
+	   
+	   String query = "UPDATE WatchOrders SET qnt = qnt + ? WHERE modello = ?";
+	   return jdbcTemplateObject.update(query, pezzi, modello);
+	   
+   }
 
 }

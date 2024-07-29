@@ -40,6 +40,8 @@ import org.springframework.web.bind.annotation.RestController;
 		 public String getDip(){
 			 
 			 
+			 ArrayList<orologio> lista = watchJDBCTemp.ritornaOrologi();
+			 //watchJDBCTemp.insertOrologi(lista);
 		
 			
 			 return "formOro";
@@ -97,7 +99,14 @@ import org.springframework.web.bind.annotation.RestController;
 			 }}
 			 double prezzo = 0;
 			 
-			 if (ordini != null && ordini.length == qnt.size()) { 
+			 if (ordini == null) {
+				 return "errorPage";
+				 
+			 }
+			 
+			 if (ordini != null ) { 
+				 
+				 if (ordini.length != 0) {
 				 
 				 for (int j = 0; j < ordini.length; j++) {
 					 
@@ -116,12 +125,8 @@ import org.springframework.web.bind.annotation.RestController;
 					 
 				 }
 			 }}
-			 
-			 else if (ordini != null) {
-			        // Se ordini non è null ma la lunghezza degli ordini e delle quantità non corrispondono, aggiungi un messaggio di errore
-			        model.addAttribute("error", "Il numero degli ordini e delle quantità non corrispondono.");
-			        return "conferma";
-			    }
+			 }
+			
 
 			 
 			 for (String s: ordini) {
@@ -179,8 +184,8 @@ import org.springframework.web.bind.annotation.RestController;
 				 
 				 
 				 // andiamo ad aggiungere i pezzi dei prodotti acquistati nella tabella pcorders
-				/* for (pcOrd comp : pc) {
-				 pcOrdJDBCTemp.updatePezzi(comp.getQnt(), comp.getModello());}*/
+				 for (watchOrd w1 : listaO) {
+				 watchJDBCTemp.updateWatchOrders(w1.getModello(), w1.qnt);}
 				 
 				 
 				 
