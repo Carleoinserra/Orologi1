@@ -30,6 +30,31 @@ public class WatchJDBCTemplate {
         String query = "UPDATE orologi SET prezzo = ? WHERE modello = ?";
         return jdbcTemplateObject.update(query, prezzo, modello);
     }
-
+    
+    public ArrayList<orologio> ritornaOrologi(){
+    	ResultSet rs1 = null;
+    	
+    	
+            String query = "SELECT * FROM orologi";
+            return jdbcTemplateObject.query(query, new ResultSetExtractor<ArrayList<orologio>>() {
+                @Override
+                public ArrayList<orologio> extractData(ResultSet rs) throws SQLException {
+                	ArrayList <orologio> listaWatch = new ArrayList<>();
+                    while (rs.next()) {
+                        orologio orologio = new orologio();
+                       
+                        orologio.setMarca(rs.getString("marca"));
+                        orologio.setModello(rs.getString("modello"));
+                        orologio.setPrezzo(Double.parseDouble(rs.getString("prezzo")));
+                        orologio.setTipologia(rs.getString("tipologia") );
+                        orologio.setUrlImage(rs.getString("url"));
+                        
+                        listaWatch.add(orologio);
+                    }
+                    return listaWatch;
+                }
+            });
+        }
+   
 
 }

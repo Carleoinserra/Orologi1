@@ -5,7 +5,15 @@ public class orologio {
 	String tipologia;
 	double prezzo;
 	String urlImage;
+	int id;
 	
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	String marca;
 	public String getMarca() {
 		return marca;

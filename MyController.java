@@ -69,4 +69,14 @@ import org.springframework.web.bind.annotation.RestController;
 			 
 			 return "changeP";
 		 }
+		 @GetMapping("/store") 
+		 public String getStore(Model model){
+			
+			 ArrayList<orologio> orologi = watchJDBCTemp.ritornaOrologi();
+			 model.addAttribute("lista", orologi);
+			 return "getStore";
+			 
+		 }
+		 
+		 
 }
