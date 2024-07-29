@@ -78,5 +78,57 @@ import org.springframework.web.bind.annotation.RestController;
 			 
 		 }
 		 
+		 @PostMapping("/buyWatch")
+		 public String addWatch(@RequestParam("ordini") String [] ordini,@RequestParam("quantities") String [] pezzi,Model model){
+			 
+			 ArrayList <orologio> lista = watchJDBCTemp.ritornaOrologi();
+			 ArrayList<Integer> qnt = new ArrayList <>();
+			 ArrayList<watchOrd> listaO = new ArrayList <>();
+			 
+			 for (String s: pezzi) {
+				 if (!s.isEmpty()) {
+				int x = Integer.parseInt(s);
+				qnt.add(x);
+				
+			 }}
+			 double prezzo = 0;
+			 
+			
+				 
+				 for (int j = 0; j < ordini.length; j++) {
+					 for (int i = 0; i < lista.size(); i++) {
+					 if (lista.get(i).getModello().equals(ordini[j])) {
+						
+						// pcJDBCTemp.updatePezzi(qnt.get(j),lista.get(i).id  );
+						 prezzo += lista.get(i).getPrezzo() * qnt.get(j);
+						 watchOrd o1 = new watchOrd();
+						o1.setModello(lista.get(i).getModello());
+						 o1.setQnt(qnt.get(j));
+						 listaO.add(o1);
+						 
+					 }
+					 
+				 }
+			 }
+			 
+			 for (String s: ordini) {
+				 System.out.println(s);
+			 }
+			
+			
+			System.out.println(prezzo);
+			
+	   model.addAttribute("lista", listaO);
+	  
+	   model.addAttribute("prezzo", prezzo);
+	   
+			 
+			
+			 
+			
+			 
+			 return "conferma";
+		 }
+		
 		 
 }
