@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<form action ="AddWatch" method ="post">
+Inserisci il nome dell'orologio <input type = "text" name  = "nome">
+<br>
+<br>
+Marca: <br><br>
+
+<select name="marca" id="cars">
+  <option value="Rolex">Rolex</option>
+  <option value="Swatch">Swatch</option>
+  <option value="Prilippe watch">Philippe watch</option>
+  <option value="Sector">Sector</option>
+</select>
+<br>
+
+
+<br>
+<br>
+Tipologia: <br><br>
+
+<select name="tipologia" id="cars">
+  <option value="smartwatch">smart</option>
+  <option value="classic">classic</option>
+  <option value="sport">sport</option>
+  <option value="deluxe">deluxe</option>
+</select>
+<br>
+<br>
+<br>
+ Inserisci il prezzo dell'orologio <input type = "text" name  = "prezzo">
+ <br>
+ <br>
+ Inserisci la url dell'immagine dell'orologio <input type = "text" name  = "url">
+ <br>
+ <br>
+<input type="submit" value = "add">
+</form>
+<hr>
+<br>
+<br>
+<button onclick = "location.href='/getWatch'"> Visualizza orologi</button>
+
+<h3> Cambia il cognome al dipendente</h3>
+<form action ="CambiaCognome" method ="post">
+Inserisci il cognome da cambiare <input type = "text" name  = "Oldlname">
+<br>
+<br>
+Inserisci il cognome <input type = "text" name  = "lname">
+<input type="submit" value = "change">
+</form>
+
+<h3> Cambia il nome al dipendente</h3>
+<form action ="CambiaNome" method ="post">
+Inserisci il cognome di cui vuoi cambiare il nome <input type = "text" name  = "lname">
+<br>
+<br>
+Inserisci il nome <input type = "text" name  = "fname">
+<input type="submit" value = "change">
+</form>
+ <button onclick = "location.href='/deleteDip'"> Cancella dipedente</button>
+ <hr>
+ <button onclick = "location.href='/getDip'"> Visualizza dipendenti</button>
+
+
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  
+    <title>User Profile</title>
+</head>
+<body>
+    <h1>Orologio aggiunto correttamente</h1>
+    
+    
+
+  <h3>Nome: <span th:text = "${watch.modello}"></span></h3>
+  <h3>Marca: <span th:text = "${watch.marca}"></span></h3>
+<h3>Tipologia: <span th:text = "${watch.tipologia}"></span></h3>
+<h3>Prezzo: <span th:text = "${watch.prezzo}"></span> euro</h3>
+  
+        <img th:src="${watch.urlImage}" alt="simpson" border="0">
+    
+    
+   <hr>
+    
+    <button onclick = "location.href='/'"> Go to home page</button>
+    
+   
+   
+</body>
+</html>
